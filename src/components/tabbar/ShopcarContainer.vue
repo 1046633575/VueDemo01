@@ -1,14 +1,13 @@
 <template>
     <div>
-        <h1>register</h1>
+        <h3>ShopContainer</h3>
     </div>
-
 </template>
 
 <script>
 
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

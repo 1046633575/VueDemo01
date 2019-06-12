@@ -1,16 +1,13 @@
 <template>
     <div>
-        <h1>login</h1>
+        <h3>SearchContainer</h3>
     </div>
-
 </template>
 
 <script>
 
 </script>
 
-<style scoped>
-    h1{
-        color: red;
-    }
+<style lang="scss" scoped>
+
 </style>
