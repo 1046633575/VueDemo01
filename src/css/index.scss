@@ -1,0 +1,9 @@
+html,body{
+  .box {
+    width: 200px;
+    height: 100px;
+    //默认情况下，webpack无法处理 css文件中的url地址
+    background: url("../images/phone.png");
+    background-size: cover;
+  }
+}
