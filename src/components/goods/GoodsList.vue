@@ -1,52 +1,82 @@
 <template>
     <div class="goods-list">
-        <div class="goods-item">
-            <img src="http://demo.dtcms.net/upload/201504/18/thumb_201504181241259978.jpg" alt="">
-            <h1 class="title">小米(Mi)小米MIX</h1>
+        <!--<router-link class="goods-item" v-for="item in goodslist" :key="item.id" :to="'/home/goodsinfo/' + item.id" tag="div">-->
+            <!--<img :src="item.img_url" alt="">-->
+            <!--<h1 class="title">{{ item.title }}</h1>-->
+            <!--<div class="info">-->
+                <!--<p class="price">-->
+                    <!--<span class="now">￥{{ item.sell_price }}</span>-->
+                    <!--<span class="old">￥{{ item.market_price }}</span>-->
+                <!--</p>-->
+                <!--<p class="sell">-->
+                    <!--<span>热卖中</span>-->
+                    <!--<span>剩 {{ item.stock_quantity }}件</span>-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</router-link>-->
+
+        <!--使用JS编程式导航-->
+        <div class="goods-item" v-for="item in goodslist" :key="item.id" @click="getDetail(item.id)">
+            <img :src="item.img_url" alt="">
+            <h1 class="title">{{ item.title }}</h1>
             <div class="info">
                 <p class="price">
-                    <span class="now">￥899</span>
-                    <span class="old">￥999</span>
+                    <span class="now">￥{{ item.sell_price }}</span>
+                    <span class="old">￥{{ item.market_price }}</span>
                 </p>
                 <p class="sell">
                     <span>热卖中</span>
-                    <span>剩6200件</span>
+                    <span>剩 {{ item.stock_quantity }}件</span>
                 </p>
             </div>
         </div>
-        <div class="goods-item">
-            <img src="http://demo.dtcms.net/upload/201504/18/thumb_201504181241259978.jpg" alt="">
-            <h1 class="title">小米(Mi)小米MIX</h1>
-            <div class="info">
-                <p class="price">
-                    <span class="now">￥899</span>
-                    <span class="old">￥999</span>
-                </p>
-                <p class="sell">
-                    <span>热卖中</span>
-                    <span>剩6200件</span>
-                </p>
-            </div>
-        </div>
-        <div class="goods-item">
-            <img src="http://demo.dtcms.net/upload/201504/18/thumb_201504181241259978.jpg" alt="">
-            <h1 class="title">小米(Mi)小米MIX</h1>
-            <div class="info">
-                <p class="price">
-                    <span class="now">￥899</span>
-                    <span class="old">￥999</span>
-                </p>
-                <p class="sell">
-                    <span>热卖中</span>
-                    <span>剩6200件</span>
-                </p>
-            </div>
-        </div>
+
+        <mt-button type="danger" size="large" @click="getMore">加载更多</mt-button>
+
     </div>
 </template>
 
 <script>
+    export default{
+        data(){
+            //data是往自己组件内部挂载一些私有数据的
+            return {
+                pageindex: 1, //分页的页数
+                goodslist: [] //存放商品列表的数组
+            };
+        },
+        created(){
+          this.getGoodsList();
+        },
+        methods: {
+            getGoodsList(){
+                //获取商品列表
+                this.$http.get("api/getgoods?pageindex=" + this.pageindex).then(result =>{
+                    if(result.body.status === 0){
+                        // this.goodslist = result.body.message;
+                        this.goodslist = this.goodslist.concat(result.body.message);
+                    }
+                })
+            },
+            getMore(){
+                this.pageindex ++;
+                this.getGoodsList();
+            },
+            getDetail(id){
+                //编程式导航使用 vue-router
+                // 用的是 this.$router 而不是 this.$route
 
+                //第一种方式
+                // this.$router.push("/home/goodsinfo/" + id);
+
+                //第二种方式
+                // this.$router.push({ path: "/home/goodsinfo/" + id })
+
+                //第三种方式 命名的路由
+                this.$router.push({ name: 'goodsinfo', params: { id }})
+            }
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
