@@ -1,7 +1,11 @@
 <template>
     <div class="app-container">
         <!--顶部 Header 区域-->
-        <mt-header fixed title="你李大爷想看报"></mt-header>
+        <mt-header fixed title="你李大爷想看报" >
+            <span slot="left" @click="goBack" v-show="flag">
+                <mt-button icon="back">返回</mt-button>
+            </span>
+        </mt-header>
 
         <!--中间的 路由 router-view区域-->
         <transition>
@@ -20,12 +24,12 @@
             </router-link>
             <router-link class="mui-tab-item-l" to="/shopcar">
                 <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-                    <span class="mui-badge" id="badge">0</span>
+                    <span class="mui-badge" id="badge">{{ $store.getters.getAllCount }}</span>
                 </span>
                 <span class="mui-tab-label">购物车</span>
             </router-link>
             <router-link class="mui-tab-item-l" to="/search">
-                <span class="mui-icon mui-icon-gear"></span>
+                <span class="mui-icon mui-icon-search"></span>
                 <span class="mui-tab-label">搜索</span>
             </router-link>
         </nav>
@@ -33,7 +37,31 @@
 </template>
 
 <script>
-
+    export default{
+        data(){
+            return {
+                flag: false
+            };
+        },
+        created(){
+            this.flag = this.$route.path === '/home' ? false : true;
+        },
+        methods: {
+            goBack(){
+                //点击后退
+                this.$router.go(-1);
+            },
+        },
+        watch: {
+            "$route.path": function(newVal){
+                if(newVal == "/home"){
+                    this.flag = false
+                } else {
+                    this.flag = true
+                }
+            }
+        }
+    }
 </script>
 
 <style scoped lang="scss">

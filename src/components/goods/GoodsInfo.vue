@@ -103,6 +103,15 @@
             addToShopCar(){
                 //添加到购物车
                 this.ballFlag = !this.ballFlag;
+                // { id:商品的id, count:要购买的数量, price:商品的单价, selected:false }
+                var goodsinfo = {
+                    id: this.id,
+                    count: this.selectCount,
+                    price: this.goodsinfo.sell_price,
+                    selected: true
+                };
+                // 调用 vuex mutations中的方法传递 goodsinfo
+                this.$store.commit('addToCar', goodsinfo);
             },
             beforeEnter(el){
                 el.style.transform = "translate(0, 0)";
@@ -128,7 +137,8 @@
             },
             getSelectedCount(count){
                 //当子组件把选中数量传递给父组件时候，选中值保存到 data上
-                this.selectedCount = count;
+                this.selectCount = count;
+                console.log(this.selectCount)
             }
         },
         components: {
